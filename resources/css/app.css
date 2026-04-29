@@ -1,0 +1,86 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@layer base {
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; }
+
+    /* Dark mode background */
+    html.dark body { @apply bg-gray-900 text-gray-100; }
+
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
+
+    /* Compact, modern select styling */
+    select {
+        @apply appearance-none bg-white text-gray-800 text-sm border border-gray-200 rounded-xl px-3 py-1.5 pr-8 focus:ring-2 focus:ring-green-500 focus:outline-none cursor-pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.5rem center;
+        background-size: 1rem;
+    }
+    html.dark select {
+        @apply bg-gray-700 text-gray-100 border-gray-600;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+    }
+
+    /* Common input dark mode */
+    html.dark input[type=text],
+    html.dark input[type=number],
+    html.dark input[type=email],
+    html.dark input[type=password],
+    html.dark input[type=date],
+    html.dark textarea {
+        @apply bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-500;
+    }
+}
+
+@layer utilities {
+    [x-cloak] { display: none !important; }
+}
+
+@layer components {
+    /* Sidebar: hidden on mobile until Alpine runs, always visible on lg+ */
+    .sidebar-mobile {
+        transform: translateX(-100%);
+        transition: transform 200ms ease-in-out;
+    }
+    @screen lg {
+        .sidebar-mobile {
+            transform: translateX(0) !important;
+        }
+    }
+
+    /* Smooth budget progress bar */
+    .progress-bar {
+        transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Pagination */
+    .pagination { @apply flex items-center gap-1 flex-wrap; }
+    .pagination span, .pagination a {
+        @apply px-3 py-1.5 rounded-lg text-sm border border-gray-200 hover:bg-gray-50 transition;
+    }
+    .pagination .active span {
+        @apply bg-green-600 text-white border-green-600;
+    }
+    .pagination .disabled span {
+        @apply text-gray-300 cursor-not-allowed;
+    }
+
+    /* Prevent long numbers / text overflowing cards */
+    .stat-value {
+        @apply text-lg sm:text-xl font-bold text-gray-900 truncate tabular-nums;
+    }
+
+    /* Form input/select compact class */
+    .input-sm {
+        @apply px-3 py-1.5 text-sm rounded-xl border border-gray-200 bg-white text-gray-800 focus:ring-2 focus:ring-green-500 focus:outline-none;
+    }
+    html.dark .input-sm {
+        @apply bg-gray-700 border-gray-600 text-gray-100;
+    }
+}

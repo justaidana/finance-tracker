@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'Track every expense, no matter how small — small leaks sink big ships.',
+    'Follow the 50/30/20 rule: 50% needs, 30% wants, 20% savings.',
+    'Build an emergency fund covering 3–6 months of living expenses.',
+    'Pay yourself first — automate savings before spending.',
+    'Avoid lifestyle inflation: when income rises, save the difference.',
+    'Use the 24-hour rule before any unplanned purchase over $50.',
+    'Compound interest is the eighth wonder of the world — start early.',
+    'Review your subscriptions monthly and cancel what you don\'t use.',
+    'Set specific, measurable savings goals with deadlines.',
+    'Invest in low-cost index funds for long-term wealth building.',
+    'Keep a budget — people who budget save 2x more on average.',
+    'Your net worth is more important than your income.',
+    'Debt avalanche: pay off highest-interest debt first to save the most.',
+    'Debt snowball: pay off smallest balances first for motivation.',
+    'Negotiate your bills — insurance, internet, and phone are often reduceable.',
+    'Cook at home 4 extra days per week and save significantly on food.',
+    'Shop with a list to avoid impulse purchases at the grocery store.',
+    'Max out your retirement contributions to benefit from tax advantages.',
+    'Diversify your investments — don\'t put all eggs in one basket.',
+    'Review your budget after every major life event.',
+    'An ETF (Exchange-Traded Fund) lets you own hundreds of stocks at once.',
+    'A good credit score can save you thousands in loan interest.',
+    'Live below your means — the gap between income and spending builds wealth.',
+];
