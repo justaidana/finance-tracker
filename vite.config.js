@@ -8,4 +8,10 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    build: {
+        // Чистые sourcemaps для продакшна (не раскрывают исходный код)
+        sourcemap: false,
+        // Оптимизация для продакшна
+        minify: 'esbuild',
+    },
 });

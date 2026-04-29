@@ -1,5 +1,7 @@
 # FinTrack — Personal Finance Tracker
 
+🌐 **Live:** https://fintrack.myworktime.kz
+
 A full-stack Laravel 11 personal finance platform with bilingual support (RU/EN), budgeting, savings goals, and analytics.
 
 ## Tech Stack
@@ -12,50 +14,93 @@ A full-stack Laravel 11 personal finance platform with bilingual support (RU/EN)
 
 ---
 
-## Quick Start
+## Production Deploy (https://fintrack.myworktime.kz)
 
-### 1. Install dependencies
 ```bash
+# 1. Clone
+git clone https://github.com/justaidana/finance-tracker.git fintrack
 cd fintrack
-composer install
-npm install
-```
 
-### 2. Environment setup
-```bash
+# 2. PHP dependencies (no dev)
+composer install --no-dev --optimize-autoloader
+
+# 3. Frontend assets
+npm ci && npm run build
+
+# 4. Environment
 cp .env.example .env
 php artisan key:generate
+# Fill in DB_PASSWORD and other secrets:
+nano .env
+
+# 5. Database
+php artisan migrate --force
+php artisan db:seed --force   # optional demo data
+
+# 6. Permissions
+chmod -R 775 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+
+# 7. Optimize caches
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
 ```
 
-### 3. Configure database in `.env`
-For **MySQL**:
-```
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=fintrack
-DB_USERNAME=root
-DB_PASSWORD=
-```
-For quick **SQLite** dev:
-```
-DB_CONNECTION=sqlite
-# database/database.sqlite is already created
+### Nginx config
+
+```nginx
+server {
+    listen 80;
+    server_name fintrack.myworktime.kz;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name fintrack.myworktime.kz;
+
+    root /var/www/fintrack/public;
+    index index.php;
+
+    ssl_certificate     /etc/letsencrypt/live/fintrack.myworktime.kz/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/fintrack.myworktime.kz/privkey.pem;
+
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+        fastcgi_hide_header X-Powered-By;
+    }
+
+    location ~ /\.(?!well-known).* { deny all; }
+}
 ```
 
-### 4. Run migrations and seed demo data
+---
+
+## Local Development
+
 ```bash
+cp .env.example .env
+# Change DB_CONNECTION=sqlite in .env for local dev
+php artisan key:generate
 php artisan migrate:fresh --seed
-```
-
-### 5. Build frontend assets
-```bash
-npm run build      # production
-npm run dev        # watch mode (hot reload)
-```
-
-### 6. Start the development server
-```bash
+npm install && npm run dev
 php artisan serve
 ```
 Open [http://localhost:8000](http://localhost:8000)
